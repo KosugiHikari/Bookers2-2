@@ -1,0 +1,43 @@
+<%= form_with model:book,local:true do |f| %>
+  <div class="form-group">
+    <%= f.label :Title %>
+    <%= f.text_field :title, class: 'form-control book_title' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :Opinion %>
+    <%= f.text_area :body, class: 'form-control book_body' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :Tag %>
+    <%= f.text_field :tag_name, class: 'form-control book_tag_name' %>
+  </div>
+  
+  <!--５段階評価ここから-->
+  <% if book.id === nil %>
+      <%= f.label :Late %>
+      <%= f.hidden_field :star, id: :review_star, class:'form-control' %>
+
+  <div id="rate_stars"></div>
+  <script>
+    $(document).on('turbolinks:load', function() {
+    let raty_elem = document.querySelector('#rate_stars');
+    raty_elem.innerHTML = ""
+    let option = {
+    starOn: "<%= asset_path('star-on.png') %>",
+    starOff: "<%= asset_path('star-off.png') %>",
+    starHalf: "<%= asset_path('star-half.png') %>",
+    scoreName: 'book[star]'
+   };
+   raty(raty_elem,option);
+  });
+</script>
+
+<% else %>
+  <%= render "star", book: book %>
+<% end %>
+<!--５段階評価ここまで-->
+
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-success' %>
+  </div>
+<% end %>
